@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Commerce Store</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+  <a class="navbar-brand" href="index.html">MyStore</a>
+  <div class="ms-auto d-flex gap-3">
+    <span id="navbarProfile" class="me-3">No user</span>
+    <button class="btn btn-outline-light me-2" data-bs-toggle="offcanvas" data-bs-target="#signup">Sign Up</button>
+    <button class="btn btn-outline-success" data-bs-toggle="offcanvas" data-bs-target="#login">Login</button>
+    <a href="cart.html" class="btn btn-warning">
+      🛒 Cart <span id="cart-count" class="badge bg-danger">0</span>
+    </a>
+    <a href="wishlist.html" class="btn btn-outline-danger">❤️ Wishlist</a>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="text-center py-5 bg-light">
+  <h1>Welcome to MyStore</h1>
+  <p class="lead">Shop the best deals across multiple categories</p>
+</section>
+
+<!-- Categories -->
+<section class="container my-5">
+  <h2 class="mb-4">Shop by Category</h2>
+  <div class="row text-center">
+    <div class="col-md-3 mb-4">
+      <div class="card category-card">
+        <img src="images/electronics.jpg" class="card-img-top" alt="Electronics">
+        <div class="card-body">
+          <h5>Electronics</h5>
+          <button class="btn btn-sm btn-outline-primary mt-2" onclick="showCategory('Electronics')">View All</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card category-card">
+        <img src="images/fashion.jpg" class="card-img-top" alt="Fashion">
+        <div class="card-body">
+          <h5>Fashion</h5>
+          <button class="btn btn-sm btn-outline-primary mt-2" onclick="showCategory('Fashion')">View All</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card category-card">
+        <img src="images/home.jpg" class="card-img-top" alt="Home">
+        <div class="card-body">
+          <h5>Home</h5>
+          <button class="btn btn-sm btn-outline-primary mt-2" onclick="showCategory('Home')">View All</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card category-card">
+        <img src="images/sports.jpg" class="card-img-top" alt="Sports">
+        <div class="card-body">
+          <h5>Sports</h5>
+          <button class="btn btn-sm btn-outline-primary mt-2" onclick="showCategory('Sports')">View All</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Search & Filters -->
+<div class="container my-4">
+  <div class="row g-3 align-items-center">
+    <div class="col-md-3">
+      <input type="text" id="search-bar" class="form-control" placeholder="Search products...">
+    </div>
+    <div class="col-md-3">
+      <select id="sort-filter" class="form-select">
+        <option value="default">Sort By</option>
+        <option value="low-high">Price: Low to High</option>
+        <option value="high-low">Price: High to Low</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label for="priceRange" class="form-label">Max Price: ₹<span id="price-value">20000</span></label>
+      <input type="range" class="form-range" min="500" max="20000" step="500" id="priceRange" oninput="updatePriceFilter(this.value)">
+    </div>
+  </div>
+</div>
+
+<!-- Product Section -->
+<div class="container my-5">
+  <h2 id="product-section-title" class="text-center mb-4">All Products</h2>
+  <div class="row" id="product-list"></div>
+</div>
+
+<!-- Quick View Modal -->
+<div class="modal fade" id="productModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="modalTitle" class="modal-title"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img id="modalImage" alt="modalImage" class="img-fluid mb-3" />
+        <p id="modalPrice"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Signup Offcanvas -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="signup">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Sign Up</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form id="signupForm" method="get">
+      <div class="mb-3">
+        <label for="signupEmail" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="signupEmail" placeholder="Enter email" required>
+
+        <label for="signupPassword" class="form-label mt-3">Password</label>
+        <input type="password" class="form-control" id="signupPassword" placeholder="Enter password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
+  </div>
+</div>
+
+<!-- ✅ Login Offcanvas -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="login">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Login</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form id="loginForm" method="get">
+      <div class="mb-3">
+        <label for="loginEmail" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="loginEmail" placeholder="Enter email" required>
+
+        <label for="loginPassword" class="form-label mt-3">Password</label>
+        <input type="password" class="form-control" id="loginPassword" placeholder="Enter password" required>
+      </div>
+      <button type="submit" class="btn btn-success">Login</button>
+    </form>
+  </div>
+</div>
+
+<ul id="userList"></ul>
+<p id="activeUserDisplay">No user logged in</p>
+<button class="btn btn-danger" id="clearData">Clear Data</button>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-3">
+  &copy; 2024 MyStore. All rights reserved.
+</footer>
+
+<script src="product.js"></script>
+<script src="cart.js"></script>
+<script src="wishlist.js"></script>
+<script src="script.js"></script>
+<script src="form.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
